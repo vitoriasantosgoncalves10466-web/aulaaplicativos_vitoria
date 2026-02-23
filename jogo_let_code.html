@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio: Let ou Const?</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #game-container { background: #1e1e1e; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 400px; text-align: center; border: 2px solid #333; }
+        .hp-bar { width: 100%; height: 20px; background: #444; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        #hp-fill { width: 100%; height: 100%; background: #ff4757; transition: width 0.3s ease; }
+        .question { font-size: 1.2rem; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; color: #eccc68; }
+        .btn-container { display: flex; gap: 10px; justify-content: center; }
+        button { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: transform 0.1s; }
+        .btn-let { background: #2f3542; color: #70a1ff; border: 1px solid #70a1ff; }
+        .btn-const { background: #2f3542; color: #ffa502; border: 1px solid #ffa502; }
+        button:active { transform: scale(0.95); }
+        #result { display: none; }
+        .code-box { background: #000; padding: 10px; font-family: monospace; color: #2ed573; margin-top: 10px; word-break: break-all; font-size: 0.8rem; }
+        input { padding: 10px; margin-bottom: 10px; width: 80%; border-radius: 5px; border: none; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="setup">
+        <h2>Identifique-se, Dev</h2>
+        <input type="text" id="playerName" placeholder="Nome Completo">
+        <button class="btn-let" onclick="startGame()">INICIAR MISSÃO</button>
+    </div>
+
+    <div id="game" style="display: none;">
+        <div class="hp-bar"><div id="hp-fill"></div></div>
+        <p>HP: <span id="hp-text">100</span></p>
+        <div class="question" id="questionText">Questão aparecerá aqui</div>
+        <div class="btn-container">
+            <button class="btn-let" onclick="checkAnswer('let')">LET</button>
+            <button class="btn-const" onclick="checkAnswer('const')">CONST</button>
+        </div>
+    </div>
+
+    <div id="result">
+        <h2 id="finalMsg">Fim de Jogo</h2>
+        <p>Sua pontuação final:</p>
+        <h1 id="finalScore">0</h1>
+        <p>Envie este código ao professor:</p>
+        <div class="code-box" id="verificationCode"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { t: "O valor do CPF de um usuário.", a: "const" },
+        { t: "A pontuação de um jogador durante a partida.", a: "let" },
+        { t: "A data de nascimento de uma pessoa.", a: "const" },
+        { t: "O total de itens no carrinho de compras.", a: "let" },
+        { t: "O nome da empresa que criou o app.", a: "const" },
+        { t: "O nível de bateria do celular.", a: "let" },
+        { t: "A cor favorita (que o usuário pode mudar no perfil).", a: "let" },
+        { t: "O número do PI (3.14159...).", a: "const" },
+        { t: "A velocidade atual de um carro em movimento.", a: "let" },
+        { t: "O ID único de um banco de dados.", a: "const" },
+        { t: "O saldo da conta bancária de um cliente.", a: "let" },
+        { t: "O número do RG (Registro Geral) de um cidadão.", a: "const" },
+        { t: "A temperatura atual lida por um sensor térmico.", a: "let" },
+        { t: "A gravidade da Terra (9.8 m/s²) usada em um cálculo físico.", a: "const" },
+        { t: "O status de um pedido (Pendente, Enviado, Entregue).", a: "let" },
+        { t: "A URL base da API do sistema.", a: "const" },
+        { t: "A quantidade de curtidas em uma foto.", a: "let" },
+        { t: "O modelo de um carro em um sistema de vendas.", a: "const" },
+        { t: "O tempo restante em um cronômetro.", a: "let" },
+        { t: "O nome de um planeta em um mapa estelar.", a: "const" }
+    ];
+
+    let currentQ = 0;
+    let hp = 100;
+    let score = 0;
+    let pName = "";
+
+    function startGame() {
+        pName = document.getElementById('playerName').value;
+        if(pName.length < 3) return alert("Digite seu nome!");
+        document.getElementById('setup').style.display = 'none';
+        document.getElementById('game').style.display = 'block';
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        if(currentQ < questions.length && hp > 0) {
+            document.getElementById('questionText').innerText = questions[currentQ].t;
+        } else {
+            endGame();
+        }
+    }
+
+    function checkAnswer(choice) {
+        if(choice === questions[currentQ].a) {
+            score += 10;
+        } else {
+            hp -= 20;
+            if(hp < 0) hp = 0;
+            updateHP();
+        }
+        currentQ++;
+        nextQuestion();
+    }
+
+    function updateHP() {
+        document.getElementById('hp-fill').style.width = hp + "%";
+        document.getElementById('hp-text').innerText = hp;
+    }
+
+    function endGame() {
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        
+        let finalS = hp <= 0 ? 0 : score;
+        document.getElementById('finalScore').innerText = finalS;
+        document.getElementById('finalMsg').innerText = hp <= 0 ? "VOCÊ MORREU!" : "MISSÃO CONCLUÍDA!";
+        
+        const hash = btoa(`${pName}|SCORE:${finalS}|HP:${hp}|AUTH2026`);
+        document.getElementById('verificationCode').innerText = hash;
+    }
+</script>
+
+</body>
+</html>
