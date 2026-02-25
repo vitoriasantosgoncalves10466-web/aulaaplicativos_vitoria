@@ -1,46 +1,69 @@
 <script>
+    let hpHeroi = 10
     let hpBoss = 300;
     let manaHeroi = 100;
     let manaGastaTotal = 0;
     let acao;
 
-    console.log("O chefe surgiu: 300hp")
+    alert("O chefe surgiu: 300hp")
+    alert(`Vida restante: ${hpHeroi}`)
     for (let turno = 1; turno <=15; turno++) {
         if (hpBoss <= 0) {
-            console.log("O Boss foi derrotado!")
+            alert("O Boss foi derrotado!")
          break;
         }
         // retorna 0, 1 ou 2
-        acao = Math.floor(Math.random() * 3) + 1
+        //acao = Math.floor(Math.random() * 3) + 1
+        //Entrada do usuário
+        let menu = "Escolha sua ação: \n"
+                    + "1 - Ataque Básico \n"
+                    + "2 - Skill \n"
+                    + "3 - Ultimate \n"
+                    + "4 - Desistir/Fugir \n"
+        let escolha = prompt(menu);
+        let acao = parseInt(escolha);
+
+        alert(`Ação: ${acao}`)
         switch(acao) {
             case 1:
-                console.log("Ataque Básico. 20 dano");
+                alert("Ataque Básico. 20 dano");
                 hpBoss = hpBoss - 20;
                 break;
             case 2:
                 if (manaHeroi >= 30) {
-                console.log("Skill. 50 dano");
+                alert("Skill. 50 dano");
                 hpBoss -= 50;
                 manaHeroi -= 30;
                 manaGastaTotal +=30;
                 }
                 else{
-                    console.log("Mana insuficiente!")
+                    alert("Mana insuficiente!")
                 }
                 break; 
             case 3:
                 if (manaGastaTotal >= 50) {
-                    console.log("Ultimate. 150 dano")
+                    alert("Ultimate. 150 dano")
                     hpBoss -= 150;
                     manaGastaTotal = 0;
                 } 
-                else{
-                    console.log("Ultimate não carregada!")
+                else
+                {
+                    alert("Ultimate não carregada!")
                 }   
-                break;   
+                break;
+            case 4:
+                alert("Você desistiu!😓")
+            break;
+            default:
+                alert("Essa ação não existe! Escolha uma das possíveis")
+                break;
         }
-        console.log("HP Boss:" + hpBoss + "Mana:" + manaHeroi)
+        manaHeroi += 5;
+        hpHeroi--;
+        alert("HP Boss:" + hpBoss + "Mana:" + manaHeroi);
+        alert(`Vida restante: ${hpHeroi}`)
+    
     }
-    if (hpBoss <= 0) console.log("Vitória!")
-    else console.log("Missão falhou! O Boss continua vivo.");
+    if (hpBoss <= 0) alert("Vitória!")
+    else alert("Missão falhou! O Boss continua vivo.");
 </script>
