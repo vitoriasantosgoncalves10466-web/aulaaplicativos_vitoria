@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-header">RPG: criado por Vitória</div>
+            <div class="card-body" id="tela" style="background-image: url('assets/background.gif'); background-position: 75%;">
+                <p class="card-text"> Turno 1</p>
+                <div class="row">
+                    <div class="col" id="col-heroi">
+                        <ul class="list-group float-end" style="width: 225px;">
+                            <li id="nome-heroi" class="list-group-item">Ector</li>
+                            <li id="titulo-heroi" class="list-group-item">⚔️</li>
+                            <li id="hp-heroi" class="list-group-item">❤️<progress id="hp-hero" value="100" max="100"
+                                    style="accent-color: red;"></progress></li>
+                            <li id="mp-heroi" class="list-group-item">🧙‍♀️<progress id="mp-hero" value="100"
+                                    max="100"></progress></li>
+                            <li id="en-heroi" class="list-group-item">⚡<progress id="en-hero" value="0" max="100"
+                                    style="accent-color: orange;"></progress></li>
+                        </ul>
+                    </div>
+                    <div class="col" id="col-boss">
+                        <ul class="list-group float-start" style="width: 225px;">
+                            <li id="nome-boss" class="list-group-item">Astrogildo</li>
+                            <li id="titulo-boss" class="list-group-item">⚔️</li>
+                            <li id="hp-boss" class="list-group-item">❤️<progress id="hp-boss" value="100" max="100"
+                                    style="accent-color: red;"></progress></li>
+                            <li id="en-boss" class="list-group-item">⚡<progress id="en-boss" value="0" max="100"
+                                    style="accent-color: orange;"></progress></li>
+                            <li id="en-boss" class="list-group-item"></progress></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-end" id="col-botoes">
+                        <div>
+                            <img src="assets/img.gif" width="200" heigth="200">
+                        </div>
+                        <div class="btn-group" id="controles">
+                            
+                        </div>
+                    </div>
+                    <div class="col text-start" id="col-msg">
+                        <img src="assets/imgvilão.gif" width="200" heigth="200">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer"></div>
+        </div> <!--card-->
+    </div> <!--container-->
+    <script src="jogo.js"></script>
+</body> <!--body-->
+</html> <!--html-->
