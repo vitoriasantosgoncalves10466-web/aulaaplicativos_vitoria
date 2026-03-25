@@ -7,9 +7,11 @@ class Personagem {
         this.energia = energia;
     }
     atacar(alvo, habilidade) {
-        if (this.mana && this.energia >= habilidade.energia) {
+        
+        if (this.mana >= habilidade.custo && this.energia >= habilidade.energia) {
             alvo.hp -= habilidade.dano;
-            if(habilidade.custo > 0) {
+            console.log(alvo.hp)
+            if (habilidade.custo > 0) {
                 this.mana -= habilidade.custo;
                 this.energia += 50;
             }
@@ -19,6 +21,16 @@ class Personagem {
             return `${this.nome} usou ${habilidade.nome}`;
         } else {
             return `Sem mana ou energia para usar $ {habilidade.nome}`;
+        }
+    }
+    boss_atacar(alvo) {
+        if (this.energia == 100) {
+            alvo.hp -= 15;
+            this.energia = 0;
+            return 'Boss usou sua habilidade';
+        } else {
+            this.energia += 50;
+            return 'Boss carregou o ataque';
         }
     }
 }
@@ -50,16 +62,30 @@ document.getElementById("titulo-boss").textContent =
 
 let constructor = document.getElementById("controles");
 
-const atualizarInterface = (mensagem) =>{
+const atualizarInterface = (mensagem) => {
 
     document.getElementById("hp-hero").value = hero.hp;
     document.getElementById("mp-hero").value = hero.mana;
     document.getElementById("en-hero").value = hero.energia;
+
+    //vilao
+    document.getElementById("hp-vilao").value = boss.hp;
+    document.getElementById("en-vilao").value = boss.energia;
+
+    document.getElementById("msg_turno").textContent = mensagem;
+
+
+    if (boss.hp <= 0) {
+        document.getElementById("tela").innerHTML = "Você venceu!";
+
+    }
+    if (hero.hp <= 0) {
+        document.getElementById("tela").innerHTML = "Você perdeu!";
+    }
+
 }
 
-//vilao
-document.getElementById("hp-vilao").value = boss.hp;
-document.getElementById("en-vilao").value = boss.energia;
+
 
 // Criar habilidades e botões
 let container = document.getElementById("controles");
@@ -69,13 +95,16 @@ let listaHabilidades = [
     new Habilidade(3, "ultimate", 15, 0, 100)
 ];
 listaHabilidades.forEach(hab => {
-
+   
     let btn = document.createElement("button");
     btn.innerText = hab.nome;
     btn.classList.add("btn", "btn-warning");
     container.appendChild(btn);
     btn.onclick = () => {
-        hero.atacar(boss, hab)
-        boss.atacar(hero)
+       
+        let mensagem = hero.atacar(boss, hab)
+        boss.boss_atacar(hero)
+        atualizarInterface(mensagem)
+
     }
 });
